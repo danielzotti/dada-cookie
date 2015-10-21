@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Cookie Test</title>
+    <!-- 1. Importare stylesheet di default per la grafica del cookie-->
+    <link rel="stylesheet" href="http://cookie.danielzotti.it/content/css/dada.cookie.min.css" type="text/css" />
+</head>
+<body>
+    <h1>Cookie Test</h1>
+
+    <div id="content">
+    </div>
+
+    <!-- 2. Importare le librerie esterne necessarie: jQuery e jQuery Cookie-->
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+    <!-- 3. Importare lo script per la gestione dei cookie-->
+    <script src="http://cookie.danielzotti.it/content/js/dada.cookie.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            cookieConsent.init({
+                appId: "1",
+                language: "IT",
+                domain: "danielzotti.it", // Serve solo per far valere i cookie anche per i sottodomini! es: example.com, se specificato, vale per tutti i domini *.example.com
+                //expires: 10 //di default se non definito sono 365 giorni
+            });
+
+            if (!cookieConsent.isCookiePresent()) {
+                window['ga-disable-UA-68963886-1'] = true;
+            }
+            else {
+                window['ga-disable-UA-68963886-1'] = false;
+            }
+
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-68963886-1', 'auto'); //none
+            ga('set', 'anonymizeIp', true);
+            ga('send', 'pageview');
+        });
+    </script>
+</body>
+</html>
+	

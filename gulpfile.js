@@ -1,0 +1,96 @@
+/// <binding BeforeBuild='build' ProjectOpened='default' />
+
+var fs = require('fs'),
+    gulp = require('gulp'),
+    uglify = require('gulp-uglify'),
+    sass = require('gulp-sass'),
+    ts = require('gulp-typescript'),
+    concat = require('gulp-concat');
+
+var paths = {
+    stylesheets: {
+        src: "service/scss/**/*.scss",
+        dest: "service/content/css/"
+    },
+    javascripts: {
+        src: "service/scripts/**/*.js",
+        dest: "service/content/js/"
+    },
+    typescripts: {
+        src: "service/scripts/dada.cookie.ts",
+        dest: "service/content/js/"
+    }
+}
+
+gulp.task('sass', [], function () {
+    var name = 'dada.cookie',
+        styleCssName = name + ".css",
+        styleMinCssName = name + ".min.css",
+        src = paths.stylesheets.src,
+        dest = paths.stylesheets.dest;
+
+    deleteFile(dest + styleCssName);
+    deleteFile(dest + styleMinCssName);
+
+    gulp.src(src)
+    .pipe(sass())
+    .pipe(concat(styleCssName))
+    .pipe(gulp.dest(dest));
+
+    gulp.src(src)
+    .pipe(sass({outputStyle: "compressed"}))
+    .pipe(concat(styleMinCssName))
+    .pipe(gulp.dest(dest));
+});
+
+
+gulp.task('typescript', [], function () {
+    var name = 'dada.cookie',
+        jsName = name + ".js",
+    src = paths.typescripts.src;
+    dest = paths.typescripts.dest;
+
+    deleteFile(dest + jsName);
+
+    var tsResult = gulp.src(src)
+    .pipe(ts({
+        //noImplicitAny: false,
+        //noExternalResolve: false,
+        out: jsName
+    }));
+    return tsResult.js.pipe(gulp.dest(dest));
+
+});
+
+
+//gulp.task('js-bundle', [], function () {
+//    var appName = 'app.js',
+//        root = 'Content/scripts/';
+
+//    deleteFile(root + appName); //helper function
+
+//    gulp.src('scripts/**/*.js')
+//    .pipe(uglify())
+//    .pipe(concat(appName))
+//    .pipe(gulp.dest(root));
+//});
+
+gulp.task('build', ['sass', 'typescript']); //, 'js-bundle'
+
+gulp.task('default', function () {
+    gulp.watch(paths.stylesheets.src, ['sass'])
+    .on('change', function (evt) {
+        console.log('[watcher] File Sass ' + evt.path.replace(/.*(?=sass)/, '') + ' was ' + evt.type + ', compiling...');
+    });
+
+    gulp.watch(paths.typescripts.src, ['typescript'])
+    .on('change', function (evt) {
+        console.log('[watcher] File Typescript ' + evt.path.replace(/.*(?=typescript)/, '') + ' was ' + evt.type + ', compiling...');
+    });;
+});
+
+function deleteFile(filePath) {
+    if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+    }
+}

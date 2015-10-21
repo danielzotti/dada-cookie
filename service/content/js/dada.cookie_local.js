@@ -15,8 +15,8 @@ var CookieConsent = (function () {
                 CookieConsent.serviceShortUrl = CookieConsent.serviceUrl + "/short";
             }
             if (!settings.language) {
-                // TODO: decommentare queste righe per attivare sempre l'inglese
-                //settings.language = "en";
+                // TODO: decommentare queste righe per attivare l'italiano (se non è impostata una lingua)
+                //settings.language = "it";
                 alert("Wrong configuration: missing 'language' information");
                 return;
             }
@@ -142,7 +142,7 @@ var CookieConsent = (function () {
         this.getShortText = function () {
             var self = _this;
             return $.ajax({
-                url: CookieConsent.serviceShortUrl + "/" + self.settings.language + "/" + self.settings.appId,
+                url: CookieConsent.serviceShortUrl + "/" + self.settings.language + "/" + self.settings.appId + CookieConsent.extensionTest,
                 type: "GET",
                 contentType: "application/json",
                 crossDomain: true
@@ -151,7 +151,7 @@ var CookieConsent = (function () {
         this.getLongText = function () {
             var self = _this;
             return $.ajax({
-                url: CookieConsent.serviceLongUrl + "/" + self.settings.language + "/" + self.settings.appId,
+                url: CookieConsent.serviceLongUrl + "/" + self.settings.language + "/" + self.settings.appId + CookieConsent.extensionTest,
                 type: "GET",
                 contentType: "application/json",
                 crossDomain: true
@@ -197,6 +197,7 @@ var CookieConsent = (function () {
     CookieConsent.serviceUrl = "../service/api";
     CookieConsent.serviceShortUrl = CookieConsent.serviceUrl + "/short";
     CookieConsent.serviceLongUrl = CookieConsent.serviceUrl + "/long";
+    CookieConsent.extensionTest = "_local.json";
     return CookieConsent;
 })();
 var CookieConsentSettings = (function () {

@@ -2,12 +2,14 @@
 /// <reference path="typings/jquery.cookie/jquery.cookie.d.ts" />
 
 class CookieConsent {
+
     public static cookiePrefix: string = "dada_cookie_";
     //private static serviceUrl: string = "http://cookie.danielzotti.it/api";
     //private static serviceUrl: string = "http://cookie.localhost/api";
     private static serviceUrl: string = "../service/api";
     private static serviceShortUrl: string = CookieConsent.serviceUrl + "/short";
     private static serviceLongUrl: string = CookieConsent.serviceUrl + "/long";
+    private static extensionTest: string = "_local.json";
     private settings: ICookieConsentSettings;
 
     public init = (settings: ICookieConsentSettings, service?: string): void => {
@@ -26,8 +28,8 @@ class CookieConsent {
         } 
 
         if (!settings.language) {
-            // TODO: decommentare queste righe per attivare sempre l'inglese
-            //settings.language = "en";
+            // TODO: decommentare queste righe per attivare l'italiano (se non è impostata una lingua)
+            //settings.language = "it";
             alert("Wrong configuration: missing 'language' information");
             return;
         }
@@ -184,7 +186,7 @@ class CookieConsent {
     private getShortText = (): JQueryXHR => {
         var self: CookieConsent = this;
         return $.ajax({
-            url: CookieConsent.serviceShortUrl + "/" + self.settings.language + "/" + self.settings.appId,
+            url: CookieConsent.serviceShortUrl + "/" + self.settings.language + "/" + self.settings.appId + CookieConsent.extensionTest,
             type: "GET",
             contentType: "application/json",
             crossDomain: true
@@ -194,7 +196,7 @@ class CookieConsent {
     private getLongText = (): JQueryXHR => {
         var self: CookieConsent = this;
         return $.ajax({
-            url: CookieConsent.serviceLongUrl + "/" + self.settings.language + "/" + self.settings.appId,
+            url: CookieConsent.serviceLongUrl + "/" + self.settings.language + "/" + self.settings.appId + CookieConsent.extensionTest,
             type: "GET",
             contentType: "application/json",
             crossDomain: true
